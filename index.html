@@ -14,14 +14,14 @@
 			  mv-firebase-key="AIzaSyC0PxY82lVLTLv80ZU1z5sz1azoYZits0I"
 			 >
 			<h1>Twit App</h1>
-			<div>Name: <input property="name"></div>
-			<textarea property="message" rows="5" cols="40" placeholder="Your twit here">
-			</textarea>
-			<button mv-action="add(group(message: message, author: name, time: +$now), twits)">Twit</button>
-			
+			<div>Name: <input property="name" mv-storage="none"></div>
+			<textarea property="message" rows="5" cols="40"
+					  placeholder="Your twit here" mv-storage="none"></textarea>
+			<button mv-action="add(group(message: message, author: name), twits)">Twit</button>
+
 			<section class="twits">
 				<h2>Twits</h2>
-				<article class="twit" property="twits" mv-multiple mv-initial-items="0">
+				<article class="twit" property="twits" mv-multiple>
 					<div class="message" property="message"></div>
 					<span class="author"></span>&mdash;<span class="time" property="time"></span>
 				</article>
