@@ -7,24 +7,38 @@
 		<title>Twit</title>
 		<script src="https://get.mavo.io/mavo.js"></script>
 		<link rel="stylesheet" href="https://get.mavo.io/mavo.css">
+		<link rel="stylesheet" href="twitter.css">
 	</head>
 	<body>
-		<main mv-app="twit" mv-firebase="auth" mv-plugins="firebase-firestore"
-			  mv-storage="firebase://mavo-cd7c3/mavo-apps/twit" mv-autosave="0"
+		<main mv-ap="twit"
+			  >
+		</main>
+		<main mv-app="twit"
+			  mv-firebase="auth realtime"
+			  mv-autosave="0"
+			  mv-plugins="firebase-firestore"
+              mv-storage="firebase://mavo-cd7c3/mavo-apps/twit"
 			  mv-firebase-key="AIzaSyC0PxY82lVLTLv80ZU1z5sz1azoYZits0I"
-			 >
+              >
 			<h1>Twit App</h1>
-			<div>Name: <input property="name" mv-storage="none"></div>
-			<textarea property="message" rows="5" cols="40"
-					  placeholder="Your twit here" mv-storage="none"></textarea>
-			<button mv-action="add(group(message: message, author: name), twits)">Twit</button>
+			<div property="mytwit">
+				<meta property="author" mv-value="$now && firebase.auth().currentUser.displayName">
+				<textarea property="message" rows="5" cols="40"
+						  placeholder="Your twit here" mv-storage="none"></textarea>
+				<meta property="time" mv-value="$now">
+				<button mv-action="add(mytwit, twits), delete(message)"
+						disabled="[!(message) || !(author)]">Twit</button>
+			</div>
 
 			<section class="twits">
 				<h2>Twits</h2>
-				<article class="twit" property="twits" mv-multiple>
-					<div class="message" property="message"></div>
-					<span class="author"></span>&mdash;<span class="time" property="time"></span>
-				</article>
+				<div class="twit" property="twits" mv-multiple mv-order="desc" mv-initial-items="0">
+					<p class="message" property="message"></p>
+					<meta property="time">
+					<meta property="age" mv-value="-60000*round(-($now-time)/60000)">
+					<span class="author" property="author"></span>&mdash;<span class="time">
+						[if(age=0,'now',duration(age) &' ago')]</span>
+				</div>
 			</section>
 		</main>
 	</body>
